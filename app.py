@@ -26,11 +26,14 @@ def index():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        date = datetime.strptime(request.form['date'], '%Y-%m-%d').date()
-        exp = Expense(date=date, description=request.form['description'],
-                      amount=float(request.form['amount']), category=request.form['category'])
-        db.session.add(exp)
-        db.session.commit()
+        try:
+            date = datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+            exp = Expense(date=date, description=request.form['description'],
+                          amount=float(request.form['amount']), category=request.form['category'])
+            db.session.add(exp)
+            db.session.commit()
+        except:
+            pass
         return redirect(url_for('index'))
     return render_template('add.html')
 
